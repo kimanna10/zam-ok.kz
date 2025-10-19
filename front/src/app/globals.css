@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black-primary: oklch(0.1763 0.014 258.36); /* #0d1117 */
+  --color-white-primary: oklch(0.9846 0.0017 247.84); /* #f9fafb */
+  --color-blue-primary: oklch(0.6231 0.188 259.81); /* #f9fafb */
+
+  --color-grey: oklch(0.7137 0.0192 261.32); /* #9ca3af */
+
+  --font-roboto-mono: Roboto Mono, sans serif;
+}
+
+body {
+  background: var(--color-black-primary);
+  color: var(--color-white-primary);
+}
