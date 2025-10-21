@@ -10,6 +10,7 @@ export type CatalogItem = {
   subcategory_id: number | null;
   manufacturer_id: number | null;
   created_at?: string;
+  slug: string;
   category?: { id: number; name: string } | null;
   subcategory?: { id: number; name: string } | null;
   manufacturer?: { id: number; name: string } | null;
@@ -30,6 +31,7 @@ export const fetchCatalog = async (): Promise<CatalogItem[]> => {
       subcategory_id,
       manufacturer_id,
       created_at,
+      slug,
       category ( id, name ),
       subcategory ( id, name ),
       manufacturer ( id, name )

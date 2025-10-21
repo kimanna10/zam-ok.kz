@@ -1,4 +1,5 @@
 import Container from "@/components/layouts/Container";
+import * as ContactService from "@/lib/services/contacts";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,19 +14,21 @@ const catalogNav = [
   { name: "Ручки", href: "/" },
 ];
 
-const contacts = [
-  { item: "+7 (701) 788 71 85", icon: <IoCall size={20} />, link: "#" },
-  {
-    item: "Написать в WhatsApp",
-    icon: <IoLogoWhatsapp size={20} />,
-    link: "#",
-  },
-  {
-    item: "г. Алматы, Казахстан",
-    icon: <IoLocationSharp size={20} />,
-    link: "#",
-  },
-];
+const contacts = await ContactService.fetchContacts();
+
+// const contacts = [
+//   { item: "+7 (701) 788 71 85", icon: <IoCall size={20} />, link: "#" },
+//   {
+//     item: "Написать в WhatsApp",
+//     icon: <IoLogoWhatsapp size={20} />,
+//     link: "#",
+//   },
+//   {
+//     item: "г. Алматы, Казахстан",
+//     icon: <IoLocationSharp size={20} />,
+//     link: "#",
+//   },
+// ];
 
 const nav = [
   { name: "Каталог", href: "/catalog" },
@@ -104,17 +107,37 @@ export default function Footer() {
                   Контакты
                 </Link>
                 <ul className="space-y-1">
-                  {contacts.map((contact, i) => (
-                    <li key={i}>
-                      <Link
-                        href={contact.link}
-                        className="hover:text-grey py-1 flex gap-1 items-center"
-                      >
-                        {contact.icon}
-                        {contact.item}
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href={`tel:${contacts[0].phone}`}
+                      className="hover:text-grey py-1 flex gap-1 items-center"
+                      target="_self"
+                    >
+                      <IoCall size={20} />
+                      {contacts[0].phone}
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      href={contacts[0].wpp}
+                      className="hover:text-grey py-1 flex gap-1 items-center"
+                      target="_blank"
+                    >
+                      <IoLogoWhatsapp size={20} />
+                      <span>Написать в WhatsApp</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="https://maps.google.com?q=Алматы,+Казахстан"
+                      className="hover:text-grey py-1 flex gap-1 items-center"
+                      target="_blank"
+                    >
+                      <IoLocationSharp size={20} />
+                      <span>г. Алматы, Казахстан</span>
+                    </Link>
+                  </li>
                 </ul>
               </address>
             </div>

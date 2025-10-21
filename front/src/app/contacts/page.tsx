@@ -1,6 +1,7 @@
 import Container from "@/components/layouts/Container";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import Title from "@/components/ui/Title";
+import * as ContactService from "@/lib/services/contacts";
 import Link from "next/link";
 import {
   IoCall,
@@ -14,28 +15,30 @@ const breadcrumbs = [
   { label: "Контакты", href: "/contacts" },
 ];
 
-const contactPerson = {
-  name: "Какоткина Алла",
-  position: "Контактное лицо",
-};
+// const contactPerson = {
+//   name: "Какоткина Алла",
+//   position: "Контактное лицо",
+// };
 
-const contacts = [
-  {
-    item: "+7 (701) 788 71 85",
-    icon: <IoCall size={20} />,
-    link: "tel:+77017887185",
-  },
-  {
-    item: "Написать в WhatsApp",
-    icon: <IoLogoWhatsapp size={20} />,
-    link: "https://wa.me/77017887185",
-  },
-  {
-    item: "г. Алматы, Казахстан",
-    icon: <IoLocationSharp size={20} />,
-    link: "https://maps.google.com?q=Алматы,+Казахстан",
-  },
-];
+// const contacts = [
+//   {
+//     item: "+7 (701) 788 71 85",
+//     icon: <IoCall size={20} />,
+//     link: "tel:+77017887185",
+//   },
+//   {
+//     item: "Написать в WhatsApp",
+//     icon: <IoLogoWhatsapp size={20} />,
+//     link: "https://wa.me/77017887185",
+//   },
+//   {
+//     item: "г. Алматы, Казахстан",
+//     icon: <IoLocationSharp size={20} />,
+//     link: "https://maps.google.com?q=Алматы,+Казахстан",
+//   },
+// ];
+
+const contacts = await ContactService.fetchContacts();
 
 export default function Contacts() {
   return (
@@ -50,27 +53,43 @@ export default function Contacts() {
               <div className="flex items-center">
                 <IoPersonCircle size={60} className="" />
                 <div className="flex flex-col justify-start">
-                  <p className="text-xl font-semibold">{contactPerson.name}</p>
-                  <p className="text-gray text-sm">{contactPerson.position}</p>
+                  <p className="text-xl font-semibold">{contacts[0].name}</p>
+                  <p className="text-gray text-sm">Контактное лицо</p>
                 </div>
               </div>
 
               <address className="not-italic">
                 <ul className="space-y-4 text-lg inline-block">
-                  {contacts.map((contact, i) => (
-                    <li key={i}>
-                      <Link
-                        href={contact.link}
-                        target={
-                          contact.link.startsWith("http") ? "_blank" : "_self"
-                        }
-                        className="hover:text-grey transition flex gap-3 items-center"
-                      >
-                        {contact.icon}
-                        <span>{contact.item}</span>
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href={`tel:${contacts[0].phone}`}
+                      target="_self"
+                      className="hover:text-grey transition flex gap-3 items-center"
+                    >
+                      <IoCall size={20} />
+                      <span>{contacts[0].phone}</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={contacts[0].wpp}
+                      target="_blank"
+                      className="hover:text-grey transition flex gap-3 items-center"
+                    >
+                      <IoLogoWhatsapp size={20} />
+                      <span>Написать в WhatsApp</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="https://maps.google.com?q=Алматы,+Казахстан"
+                      target="_blank"
+                      className="hover:text-grey transition flex gap-3 items-center"
+                    >
+                      <IoLocationSharp size={20} />
+                      <span>г. Алматы, Казахстан</span>
+                    </Link>
+                  </li>
                 </ul>
               </address>
             </div>

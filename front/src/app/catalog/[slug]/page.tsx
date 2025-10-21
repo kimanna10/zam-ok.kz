@@ -1,37 +1,44 @@
 import Container from "@/components/layouts/Container";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
-const products = [
-  {
-    slug: "vreznoy-zamok-mottura",
-    name: "Врезной замок Mottura",
-    price: "25 000 ₸",
-    image: "/images/catalog/lock1.jpg",
-    description:
-      "Надёжный врезной замок итальянского качества. Обеспечивает высокий уровень безопасности и долговечность конструкции.",
-  },
-  {
-    slug: "seyf-ofisnyy",
-    name: "Сейф офисный",
-    price: "45 000 ₸",
-    image: "/images/catalog/safe1.jpg",
-    description:
-      "Компактный сейф для документов и ценностей. Идеально подходит для офиса или квартиры.",
-  },
-  {
-    slug: "ruchka-dvernaya-stalnaya",
-    name: "Ручка дверная стальная",
-    price: "12 000 ₸",
-    image: "/images/catalog/handle1.jpg",
-    description:
-      "Элегантная и надёжная стальная ручка, устойчивая к износу. Подойдёт для дверей любого типа.",
-  },
-];
+import { fetchCatalog } from "@/lib/services/catalog";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+// const products = [
+//   {
+//     slug: "vreznoy-zamok-mottura",
+//     name: "Врезной замок Mottura",
+//     price: "25 000 ₸",
+//     image: "/images/catalog/lock1.jpg",
+//     description:
+//       "Надёжный врезной замок итальянского качества. Обеспечивает высокий уровень безопасности и долговечность конструкции.",
+//   },
+//   {
+//     slug: "seyf-ofisnyy",
+//     name: "Сейф офисный",
+//     price: "45 000 ₸",
+//     image: "/images/catalog/safe1.jpg",
+//     description:
+//       "Компактный сейф для документов и ценностей. Идеально подходит для офиса или квартиры.",
+//   },
+//   {
+//     slug: "ruchka-dvernaya-stalnaya",
+//     name: "Ручка дверная стальная",
+//     price: "12 000 ₸",
+//     image: "/images/catalog/handle1.jpg",
+//     description:
+//       "Элегантная и надёжная стальная ручка, устойчивая к износу. Подойдёт для дверей любого типа.",
+//   },
+// ];
+
+export async function generateStaticParams() {
+  // ✅ Получаем список товаров из БД
+  const catalog = await fetchCatalog();
+
+  // Возвращаем массив slug'ов для SSG (Next.js)
+  return catalog.map((item) => ({ slug: item.slug }));
+
+  // return products.map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProductPage({
@@ -40,7 +47,10 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  // ✅ Загружаем все товары и ищем нужный по slug
+  const catalog = await fetchCatalog();
+  const product = catalog.find((p) => p.slug === slug);
+  // const product = products.find((p) => p.slug === slug);
 
   if (!product) return notFound();
 
@@ -56,24 +66,43 @@ export default async function ProductPage({
         <Breadcrumbs items={breadcrumbs} />
 
         <div className="py-20 grid md:grid-cols-2 gap-10 items-center">
-          <div className="relative aspect-square rounded-xl overflow-hidden">
-            <Image
-              src={product.image}
+          <div className="relative aspect-auto rounded-xl overflow-hidden">
+            <img
+              src={product.img}
               alt={product.name}
-              fill
-              className="object-cover"
+              className="w-full h-full object-cover"
             />
           </div>
 
-          <div>
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <p className="text-primary text-xl font-semibold mb-6">
-              {product.price}
+          <div className="flex flex-col gap-3">
+            <h1 className="text-3xl font-bold">{product.name}</h1>
+            <p className="text-primary text-xl font-semibold">
+              от {product.price?.toLocaleString("ru-RU")} ₸
             </p>
-            <p className="text-grey mb-8">{product.description}</p>
+            <p className="text-grey">{product.desc}</p>
+            <div className="text-sm text-white-primary mt-3 space-y-1">
+              {product.category?.name && (
+                <p>
+                  <span className="font-medium text-grey">Категория: </span>
+                  {product.category.name}
+                </p>
+              )}
+              {product.subcategory?.name && (
+                <p>
+                  <span className="font-medium text-grey">Подкатегория: </span>
+                  {product.subcategory.name}
+                </p>
+              )}
+              {product.manufacturer?.name && (
+                <p>
+                  <span className="font-medium text-grey">Производитель: </span>
+                  {product.manufacturer.name}
+                </p>
+              )}
+            </div>
 
-            <button className="bg-primary text-white py-3 px-8 rounded-xl hover:bg-primary/80 transition">
-              Добавить в корзину
+            <button className="bg-white-primary text-black-primary py-2 px-6 rounded-xl hover:bg-primary/80 transition cursor-pointer">
+              Заказать
             </button>
           </div>
         </div>
