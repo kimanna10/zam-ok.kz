@@ -7,29 +7,32 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 
+import * as FAQService from "@/lib/services/faq";
+
 const breadcrumbs = [
   { label: "Главная", href: "/" },
   { label: "Вопросы", href: `/questions` },
 ];
 
+const faq = await FAQService.fetchFAQs();
 // Пример вопросов
-const faq = [
-  {
-    question: "Как сделать заказ?",
-    answer:
-      "Вы можете оформить заказ прямо на сайте или связаться с нами по телефону. После подтверждения мы подготовим ваш заказ к отправке.",
-  },
-  {
-    question: "Есть ли доставка по Казахстану?",
-    answer:
-      "Да, мы доставляем по всему Казахстану. Также возможна самовывоз из г. Алматы.",
-  },
-  {
-    question: "Можно ли оплатить при получении?",
-    answer:
-      "Да, возможна оплата при получении или переводом на карту после подтверждения заказа.",
-  },
-];
+// const faq = [
+//   {
+//     question: "Как сделать заказ?",
+//     answer:
+//       "Вы можете оформить заказ прямо на сайте или связаться с нами по телефону. После подтверждения мы подготовим ваш заказ к отправке.",
+//   },
+//   {
+//     question: "Есть ли доставка по Казахстану?",
+//     answer:
+//       "Да, мы доставляем по всему Казахстану. Также возможна самовывоз из г. Алматы.",
+//   },
+//   {
+//     question: "Можно ли оплатить при получении?",
+//     answer:
+//       "Да, возможна оплата при получении или переводом на карту после подтверждения заказа.",
+//   },
+// ];
 
 export default function Questions() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
