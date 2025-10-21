@@ -377,13 +377,7 @@ export default function Catalog() {
             <div className="grid grid-cols-1  gap-6">
               {filtered.map((product, i) => (
                 <Link href={`/catalog/${product.slug}`} key={product.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className="flex md:items-center md:flex-row flex-col gap-4 bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition backdrop-blur-md cursor-pointer"
-                  >
+                  <div className="flex md:items-center md:flex-row flex-col gap-4 bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition backdrop-blur-md cursor-pointer">
                     {/* Картинка слева */}
                     <div className="relative md:w-40 w-full h-56 md:h-40 flex-shrink-0 rounded-xl overflow-hidden">
                       <img
@@ -412,7 +406,7 @@ export default function Catalog() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </Link>
               ))}
             </div>
