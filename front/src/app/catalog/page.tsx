@@ -382,10 +382,10 @@ export default function Catalog() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className="flex items-center gap-4 bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition backdrop-blur-md cursor-pointer"
+                    className="flex md:items-center md:flex-row flex-col gap-4 bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition backdrop-blur-md cursor-pointer"
                   >
                     {/* Картинка слева */}
-                    <div className="relative w-40 h-40 flex-shrink-0 rounded-xl overflow-hidden">
+                    <div className="relative md:w-40 w-full h-56 md:h-40 flex-shrink-0 rounded-xl overflow-hidden">
                       <img
                         src={product.img || "/images/no-image.jpg"}
                         alt={product.name}
